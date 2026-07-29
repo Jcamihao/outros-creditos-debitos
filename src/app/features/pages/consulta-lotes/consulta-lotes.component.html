@@ -1,1 +1,24 @@
-<p>consulta-lotes works!</p>
+<app-filtro-lotes (pesquisar)="onPesquisar($event)"></app-filtro-lotes>
+
+<div class="barra-acoes">
+  <button mat-stroked-button [disabled]="!podeConfirmarEnviar()">Confirmar</button>
+  <button mat-stroked-button [disabled]="!podeConfirmarEnviar()">Enviar</button>
+  <button mat-stroked-button [disabled]="!podeVisualizarJustificativa()">
+    Visualizar Justificativa
+  </button>
+  <button mat-stroked-button (click)="onIncluir()">Incluir</button>
+  <button mat-stroked-button [disabled]="!podeAlterarExcluirVisualizar()">Alterar</button>
+  <button mat-stroked-button [disabled]="!podeAlterarExcluirVisualizar()">Excluir</button>
+  <button mat-stroked-button [disabled]="!podeAlterarExcluirVisualizar()">Visualizar</button>
+</div>
+
+@if (carregando()) {
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+}
+@if (erro()) {
+  <div class="erro">{{ erro() }}</div>
+}
+<app-tabela-lotes
+  [lotes]="lotes()"
+  (selectionChange)="onSelectionChange($event)"
+></app-tabela-lotes>

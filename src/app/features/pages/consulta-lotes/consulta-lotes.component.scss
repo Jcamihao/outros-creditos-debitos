@@ -1,0 +1,39 @@
+.barra-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  margin: var(--spacing-md) 0;
+}
+
+.barra-acoes button {
+  border-radius: 0;
+  margin-left: -1px;
+}
+
+.barra-acoes button:first-child {
+  border-radius: 4px 0 0 4px;
+  margin-left: 0;
+}
+
+.barra-acoes button:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+@media (max-width: 600px) {
+  .barra-acoes {
+    flex-direction: column;
+  }
+
+  .barra-acoes button {
+    width: 100%;
+    border-radius: 0;
+    margin-left: 0;
+  }
+
+  .barra-acoes button:first-child {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .barra-acoes button:last-child {
+    border-radius: 0 0 4px 4px;
+  }
+}
