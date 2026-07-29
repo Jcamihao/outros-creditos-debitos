@@ -1,0 +1,26 @@
+th.mat-mdc-header-cell {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+tr.mat-mdc-row {
+  cursor: pointer;
+}
+
+tr.selecionado {
+  background-color: rgba(15, 76, 76, 0.12);
+}
+
+.busca {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+}
+
+.paginacao {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  margin-top: var(--spacing-sm);
+}
