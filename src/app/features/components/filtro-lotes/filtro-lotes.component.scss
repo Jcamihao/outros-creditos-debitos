@@ -1,0 +1,27 @@
+.row {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.col-md-6 {
+  flex: 1 1 300px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.subtitulo {
+  font-weight: 700;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.par-de-ate {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.par-de-ate mat-form-field {
+  flex: 1;
+}

@@ -1,1 +1,86 @@
-<p>filtro-lotes works!</p>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <h3>Filtros</h3>
+  </mat-expansion-panel-header>
+
+  <p class="subtitulo">PESQUISAR LOTE OUTROS CRÉDITOS/SERVIÇO</p>
+
+  <form [formGroup]="filtroForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>Instituição Resp.</mat-label>
+          <input matInput formControlName="instituicaoResp" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6 par-de-ate">
+        <mat-form-field>
+          <mat-label>ID Lote (De)</mat-label>
+          <input matInput formControlName="idLoteDe" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>ID Lote (Até)</mat-label>
+          <input matInput formControlName="idLoteAte" />
+          @if (filtroForm.get('idLoteAte')?.hasError('faixaInvalida')) {
+            <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>Instituição</mat-label>
+          <input matInput formControlName="instituicao" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6 par-de-ate">
+        <mat-form-field>
+          <mat-label>Valor do Lote (De)</mat-label>
+          <input matInput formControlName="valorLoteDe" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Valor do Lote (Até)</mat-label>
+          <input matInput formControlName="valorLoteAte" />
+          @if (filtroForm.get('valorLoteAte')?.hasError('faixaInvalida')) {
+            <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>Situação Lote</mat-label>
+          <select matNativeControl formControlName="situacaoLote">
+            <option value="">Todas</option>
+            @for (situacao of situacoesLote; track situacao) {
+              <option [value]="situacao">{{ situacao }}</option>
+            }
+          </select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6 par-de-ate">
+        <mat-form-field>
+          <mat-label>Data Entrada (De)</mat-label>
+          <input matInput formControlName="dataEntradaDe" [matDatepicker]="picker1" />
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Data Entrada (Até)</mat-label>
+          <input matInput formControlName="dataEntradaAte" [matDatepicker]="picker2" />
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          @if (filtroForm.get('dataEntradaAte')?.hasError('faixaInvalida')) {
+            <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button mat-flat-button color="primary" type="submit">Pesquisar</button>
+  </form>
+</mat-expansion-panel>
