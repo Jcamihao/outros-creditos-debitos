@@ -1,0 +1,56 @@
+h2[mat-dialog-title] {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  margin: 0;
+  padding: var(--spacing-md);
+}
+
+th.mat-mdc-header-cell {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+tr.mat-mdc-row {
+  cursor: pointer;
+}
+
+tr.selecionado {
+  background-color: rgba(15, 76, 76, 0.12);
+}
+
+.cabecalho-lote {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  align-items: center;
+  padding: var(--spacing-md);
+}
+
+.cabecalho-lote mat-form-field {
+  flex: 1 1 150px;
+}
+
+.secao-anexo {
+  margin-top: var(--spacing-lg);
+}
+
+.toolbar-anexo {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+div[formGroupName] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md) 0;
+}
+
+div[formGroupName] mat-form-field {
+  flex: 1 1 220px;
+}
+
+mat-checkbox {
+  align-self: center;
+}

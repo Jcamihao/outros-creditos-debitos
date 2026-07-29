@@ -1,1 +1,273 @@
-<p>lote-lancamentos-modal works!</p>
+<h2 mat-dialog-title>Incluir Lançamento</h2>
+<div class="cabecalho-lote">
+  <mat-form-field>
+    <mat-label>Id Lote</mat-label>
+    <input matInput value="" disabled />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Nr. Lote CCO</mat-label>
+    <input matInput value="" disabled />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Data de Entrada</mat-label>
+    <input matInput [value]="dataEntradaLote | date: 'dd/MM/yyyy'" disabled />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Quant. Lançamentos</mat-label>
+    <input matInput [value]="quantLancamentos()" disabled />
+  </mat-form-field>
+  <mat-checkbox
+    [checked]="eventoABaixarPorLote()"
+    (change)="eventoABaixarPorLote.set($event.checked)"
+  >
+    Evento a baixar por lote
+  </mat-checkbox>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="lancamentoForm" (ngSubmit)="onIncluirLancamento()">
+    <div formGroupName="contaCorrente">
+      <mat-form-field>
+        <mat-label>Conta Corrente</mat-label>
+        <input matInput formControlName="contaCorrente" />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="buscarConta()"
+          aria-label="Buscar conta corrente"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+
+        @if (lancamentoForm.get('contaCorrente.contaCorrente')?.hasError('required')) {
+          <mat-error>Conta Corrente é obrigatória</mat-error>
+        }
+      </mat-form-field>
+      @if (nomeTitularEncontrado()) {
+        <span>{{ nomeTitularEncontrado() }}</span>
+      }
+
+      <mat-form-field>
+        <mat-label>Valor</mat-label>
+        <input matInput type="number" formControlName="valor" />
+
+        @if (lancamentoForm.get('contaCorrente.valor')?.hasError('required')) {
+          <mat-error>Valor é obrigatório</mat-error>
+        }
+        @if (lancamentoForm.get('contaCorrente.valor')?.hasError('min')) {
+          <mat-error>Valor deve ser maior que zero</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Histórico</mat-label>
+        <mat-select formControlName="historico">
+          <mat-option value="Lançamento Manual">Lançamento Manual</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="estorno">Estorno</mat-checkbox>
+
+      <mat-form-field>
+        <mat-label>Documento</mat-label>
+        <input matInput formControlName="documento" />
+        @if (lancamentoForm.get('contaCorrente.documento')?.hasError('required')) {
+          <mat-error>Documento é obrigatório</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Descrição</mat-label>
+        <textarea matInput formControlName="descricao"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Situação</mat-label>
+        <input matInput formControlName="situacao" />
+      </mat-form-field>
+    </div>
+
+    <div formGroupName="documentoCsc">
+      <mat-form-field>
+        <mat-label>PA</mat-label>
+        <mat-select formControlName="pa">
+          <mat-option value="Cooperativa">Cooperativa</mat-option>
+        </mat-select>
+        @if (lancamentoForm.get('documentoCsc.pa')?.hasError('required')) {
+          <mat-error>PA é obrigatório</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>ID Evento</mat-label>
+        <input matInput formControlName="idEvento" />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="buscarEvento()"
+          aria-label="Buscar evento"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+      @if (eventoDescricaoEncontrada()) {
+        <span>{{ eventoDescricaoEncontrada() }}</span>
+      }
+
+      <mat-form-field>
+        <mat-label>Compl. Histórico</mat-label>
+        <input matInput formControlName="complHistorico" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Situação</mat-label>
+        <input matInput formControlName="situacao" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>ID Documento CSC</mat-label>
+        <input matInput formControlName="idDocCsc" />
+      </mat-form-field>
+    </div>
+
+    <mat-dialog-actions>
+      <button mat-button type="button" (click)="dialogRef.close(lancamentos())">Fechar</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="lancamentoForm.invalid || modoVisualizacao()"
+      >
+        Incluir
+      </button>
+    </mat-dialog-actions>
+  </form>
+
+  <div class="toolbar-lancamentos">
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="duplicarLancamento()"
+    >
+      Duplicar
+    </button>
+
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="visualizarLancamento()"
+    >
+      Visualizar
+    </button>
+
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="alterarLancamento()"
+    >
+      Alterar
+    </button>
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="excluirLancamento()"
+    >
+      Excluir
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="lancamentos()">
+    <ng-container matColumnDef="idLancamento">
+      <th mat-header-cell *matHeaderCellDef>ID Lançamento</th>
+      <td mat-cell *matCellDef="let lancamento">{{ lancamento.idLancamento }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="contaCorrente">
+      <th mat-header-cell *matHeaderCellDef>Conta Corrente</th>
+      <td mat-cell *matCellDef="let lancamento">{{ lancamento.contaCorrente }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="historico">
+      <th mat-header-cell *matHeaderCellDef>Histórico</th>
+      <td mat-cell *matCellDef="let lancamento">{{ lancamento.historico }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <th mat-header-cell *matHeaderCellDef>Valor</th>
+      <td mat-cell *matCellDef="let lancamento">{{ lancamento.valor | currency: 'BRL' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="pa">
+      <th mat-header-cell *matHeaderCellDef>PA</th>
+      <td mat-cell *matCellDef="let lancamento">{{ lancamento.documentoCsc.pa }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="situacao">
+      <th mat-header-cell *matHeaderCellDef>Situação</th>
+      <td mat-cell *matCellDef="let lancamento">{{ lancamento.situacao }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsLancamentos"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumnsLancamentos"
+      (click)="selecionarLancamento(row)"
+      [class.selecionado]="lancamentoSelecionado() === row"
+    ></tr>
+  </table>
+
+  <div class="secao-anexo">
+    <h3>Anexo</h3>
+    <div class="toolbar-anexo">
+      <button mat-stroked-button type="button" [disabled]="!anexoSelecionado()">Visualizar</button>
+      <button mat-stroked-button type="button" (click)="seletorArquivo.click()">Incluir</button>
+      <input #seletorArquivo type="file" hidden (change)="incluirAnexo(seletorArquivo)" />
+      <button
+        mat-stroked-button
+        type="button"
+        [disabled]="!anexoSelecionado()"
+        (click)="excluirAnexo()"
+      >
+        Excluir
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="anexos()">
+      <ng-container matColumnDef="nomeArquivo">
+        <th mat-header-cell *matHeaderCellDef>Nome Reduzido do Arquivo</th>
+        <td mat-cell *matCellDef="let anexo">{{ anexo.nomeArquivo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let anexo">{{ anexo.descricao }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataInclusao">
+        <th mat-header-cell *matHeaderCellDef>Data Inclusão</th>
+        <td mat-cell *matCellDef="let anexo">
+          {{ anexo.dataInclusao | date: 'dd/MM/yyyy HH:mm' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="idUsuario">
+        <th mat-header-cell *matHeaderCellDef>ID Usuário</th>
+        <td mat-cell *matCellDef="let anexo">{{ anexo.idUsuario }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsAnexos"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumnsAnexos"
+        (click)="selecionarAnexo(row)"
+        [class.selecionado]="anexoSelecionado() === row"
+      ></tr>
+    </table>
+  </div>
+</mat-dialog-content>
