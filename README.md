@@ -1,59 +1,44 @@
-# OutrosCreditosDebitos
+# Desafio Angular Sicoob — Outros Créditos/Débitos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.14.
+Esse projeto é a minha solução para o desafio técnico de migração do módulo "Outros Créditos/Débitos" do Adobe Flex pra Angular. São duas telas: a consulta de lotes e a modal de inclusão de lançamento.
 
-## Development server
+## Como pensei a solução
 
-To start a local development server, run:
+Como o desafio não precisava criar um backend, usei apenas as imagens de referência das telas e a descrição funcional. Por isso, toda a camada de dados (`features/services` e `features/data`) é mockada em memória, usei Observables com `delay()` pra simular uma latência de uma chamada real — inclusive com uma taxa de ~15% de erro simulado na busca de lotes, só pra garantir que o tratamento de erro (spinner, mensagem, `catchError`) fosse realizado e não ficasse só no caso de sucesso.
 
-```bash
-ng serve
-```
+Usei Angular 21 com componentes standalone porque é o padrão recomendado atualmente pelo próprio time do Angular, usei tambem Signals pro estado local dos componentes (seleção de linha, modo de visualização, etc.) com Reactive Forms pros formulários — Signals pra estado síncrono simples, Forms pra tudo que envolve validação e campos.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Um ponto que exigiu mais atenção foi a validação de faixa dos filtros "De/Até" (ID Lote, Valor, Data). O Angular não tem um validador pronto pra comparar dois campos entre si, então fiz um validador custom (`shared/validators/range.validator.ts`). Essa validação, inclusive, teve uma correção no meio do caminho: a primeira versão comparava os valores como texto, o que dava resultado errado em alguns casos (`"9" > "10"` retorna `true` numa comparação de string, por ordem alfabética). Corrigi convertendo os dois lados pra número antes de comparar, e escrevi um teste específico só pra esse caso, pra esse problema nao acontecer mais voltar sem eu perceber.
 
-## Code scaffolding
+Pro tema visual, gerei a paleta M3 (verde petróleo) com o schematic oficial do Angular Material (`ng generate @angular/material:theme-color`), tentando chegar o mais perto possível da identidade visual do Sicoob que aparecia nas imagens de referência que recebi.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Pra testes, forcei o Jest no lugar do Vitest, que já vem configurado por padrão no Angular 21. Ainda nao tem um pacote oficial 100% compativel com essa versão, então precisei instalar com `--legacy-peer-deps` — mas achei importante manter o Jest mesmo assim, por ter uma certa familiaridade.
 
-```bash
-ng generate component component-name
-```
+## O que tem em cada tela
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+**Consulta de Lotes** — painel de filtros retrátil, com os três pares De/Até validados, uma tabela paginada com seleção de linha, e uma barra de ações que habilita ou desabilita cada botão (Confirmar, Enviar, Alterar, Excluir, Visualizar...) dependendo de quantos lotes estão selecionados no momento.
 
-```bash
-ng generate --help
-```
+**Incluir Lançamento** (modal) — dividida em Conta Corrente e Documento CSC. A busca de conta e a busca de evento abrem modais próprias (com campo de busca, listagem e paginação), a tabela mostra os lançamentos já incluídos no lote atual, e tem uma seção de anexos com upload e remoção.
 
-## Building
-
-To build the project run:
+## Rodando o projeto
 
 ```bash
-ng build
+npm install
+ng s -o        # particularmente eu prefiro esse comando pra rodar o app e já abrir uma tela no browser
+npm test       # roda os testes
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Estrutura de pastas
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+src/app/
+├── features/
+│   ├── components/   # UI: filtro, tabela, as duas modais
+│   ├── pages/        # Tela roteada (consulta-lotes)
+│   ├── services/     # Mocks de "backend" (lote, conta-corrente, evento)
+│   └── data/         # Os dados mockados em si
+└── shared/
+    ├── models/        # Interfaces de domínio
+    ├── enum/          # Situação do lote
+    └── validators/    # Validador customizado de faixa (De/Até)
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
