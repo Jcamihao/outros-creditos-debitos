@@ -93,9 +93,27 @@ export class ConsultaLotesComponent {
           lancamentos,
         };
 
-        this.loteService.incluirLote(novoLote).subscribe(() => {
-          this.loteService.buscarLote({}).subscribe((resultado) => this.lotes.set(resultado));
-        });
+        this.loteService
+          .incluirLote(novoLote)
+          .pipe(
+            catchError((error) => {
+              this.erro.set('Erro ao incluir lote, tente novamente mais tarde.');
+              return of(null);
+            }),
+          )
+          .subscribe((loteIncluido) => {
+            if (!loteIncluido) return;
+
+            this.loteService
+              .buscarLote({})
+              .pipe(
+                catchError((error) => {
+                  this.erro.set('Erro ao buscar lotes, tente novamente mais tarde.');
+                  return of([]);
+                }),
+              )
+              .subscribe((resultado) => this.lotes.set(resultado));
+          });
       }
     });
   }
