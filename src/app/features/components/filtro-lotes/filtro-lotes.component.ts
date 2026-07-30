@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { LoteService } from '../../services/lote/lote.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { rangeValidator } from '../../../shared/validators/range.validator';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { FiltroLoteBusca } from '../../../shared/models/filtro-lote-busca.model';
 import { debounceTime, Subject } from 'rxjs';
 import { SituacaoLote } from '../../../shared/enum/situacao-lote.enum';
@@ -17,7 +16,6 @@ import { SituacaoLote } from '../../../shared/enum/situacao-lote.enum';
 @Component({
   selector: 'app-filtro-lotes',
   imports: [
-    CommonModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
@@ -39,7 +37,6 @@ export class FiltroLotesComponent {
 
   constructor() {
     this.pesquisarClick$.pipe(debounceTime(300)).subscribe(() => {
-      console.log('Teste do debounceTime');
       this.pesquisar.emit(this.filtroForm.value as FiltroLoteBusca);
     });
   }

@@ -1,60 +1,27 @@
-<mat-expansion-panel>
+<mat-expansion-panel expanded="true">
   <mat-expansion-panel-header>
-    <h3>Filtros</h3>
+    <div class="cabecalho-textos">
+      <h3>Filtros</h3>
+      <p class="subtitulo">PESQUISAR LOTE OUTROS CRÉDITOS/SERVIÇO</p>
+    </div>
   </mat-expansion-panel-header>
 
-  <p class="subtitulo">PESQUISAR LOTE OUTROS CRÉDITOS/SERVIÇO</p>
-
   <form [formGroup]="filtroForm" (ngSubmit)="onSubmit()">
-    <div class="row">
-      <div class="col-md-6">
-        <mat-form-field>
-          <mat-label>Instituição Resp.</mat-label>
-          <input matInput formControlName="instituicaoResp" />
+    <div class="filtro-grid">
+      <div class="filtro-coluna">
+        <label class="rotulo-campo">Instituição Resp.</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="instituicaoResp" placeholder="Instituição Responsavel" />
         </mat-form-field>
-      </div>
-      <div class="col-md-6 par-de-ate">
-        <mat-form-field>
-          <mat-label>ID Lote (De)</mat-label>
-          <input matInput formControlName="idLoteDe" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>ID Lote (Até)</mat-label>
-          <input matInput formControlName="idLoteAte" />
-          @if (filtroForm.get('idLoteAte')?.hasError('faixaInvalida')) {
-            <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
-          }
-        </mat-form-field>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <mat-form-field>
-          <mat-label>Instituição</mat-label>
-          <input matInput formControlName="instituicao" />
+        <label class="rotulo-campo">Instituição</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="instituicao" placeholder="Instituição" />
         </mat-form-field>
-      </div>
-      <div class="col-md-6 par-de-ate">
-        <mat-form-field>
-          <mat-label>Valor do Lote (De)</mat-label>
-          <input matInput formControlName="valorLoteDe" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Valor do Lote (Até)</mat-label>
-          <input matInput formControlName="valorLoteAte" />
-          @if (filtroForm.get('valorLoteAte')?.hasError('faixaInvalida')) {
-            <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
-          }
-        </mat-form-field>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <mat-form-field>
-          <mat-label>Situação Lote</mat-label>
-          <select matNativeControl formControlName="situacaoLote">
+        <label class="rotulo-campo">Situação Lote</label>
+        <mat-form-field appearance="outline">
+          <select matNativeControl formControlName="situacaoLote" placeholder="Situação Lote">
             <option value="">Todas</option>
             @for (situacao of situacoesLote; track situacao) {
               <option [value]="situacao">{{ situacao }}</option>
@@ -62,25 +29,80 @@
           </select>
         </mat-form-field>
       </div>
-      <div class="col-md-6 par-de-ate">
-        <mat-form-field>
-          <mat-label>Data Entrada (De)</mat-label>
-          <input matInput formControlName="dataEntradaDe" [matDatepicker]="picker1" />
-          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Data Entrada (Até)</mat-label>
-          <input matInput formControlName="dataEntradaAte" [matDatepicker]="picker2" />
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-          @if (filtroForm.get('dataEntradaAte')?.hasError('faixaInvalida')) {
-            <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
-          }
-        </mat-form-field>
+
+      <div class="filtro-coluna">
+        <div class="linha-com-rotulo">
+          <span class="rotulo-linha">Valor do Lote</span>
+          <div class="par-de-ate">
+            <div class="campo-com-rotulo">
+              <label class="rotulo-pequeno">De</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="valorLoteDe" />
+              </mat-form-field>
+            </div>
+            <div class="campo-com-rotulo">
+              <label class="rotulo-pequeno">Até</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="valorLoteAte" />
+                @if (filtroForm.get('valorLoteAte')?.hasError('faixaInvalida')) {
+                  <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="linha-com-rotulo">
+          <span class="rotulo-linha">ID Lote</span>
+          <div class="par-de-ate">
+            <div class="campo-com-rotulo">
+              <label class="rotulo-pequeno">De</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="idLoteDe" />
+              </mat-form-field>
+            </div>
+            <div class="campo-com-rotulo">
+              <label class="rotulo-pequeno">Até</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="idLoteAte" />
+                @if (filtroForm.get('idLoteAte')?.hasError('faixaInvalida')) {
+                  <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="linha-com-rotulo">
+          <span class="rotulo-linha">Data Entrada</span>
+          <div class="par-de-ate">
+            <div class="campo-com-rotulo">
+              <label class="rotulo-pequeno">De</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="dataEntradaDe" [matDatepicker]="picker1" />
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="campo-com-rotulo">
+              <label class="rotulo-pequeno">Até</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="dataEntradaAte" [matDatepicker]="picker2" />
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                @if (filtroForm.get('dataEntradaAte')?.hasError('faixaInvalida')) {
+                  <mat-error>O valor "Até" deve ser maior que o "De"</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <button mat-flat-button color="primary" type="submit">Pesquisar</button>
+    <div class="rodape-filtro">
+      <button mat-flat-button color="primary" type="submit">Pesquisar</button>
+    </div>
   </form>
 </mat-expansion-panel>
