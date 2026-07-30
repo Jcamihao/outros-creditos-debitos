@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Incluir Lançamento</h2>
-<div class="cabecalho-lote">
+<!-- <div class="cabecalho-lote">
   <mat-form-field>
     <mat-label>Id Lote</mat-label>
     <input matInput value="" disabled />
@@ -22,7 +22,7 @@
   >
     Evento e Anexo por lote
   </mat-checkbox>
-</div>
+</div> -->
 
 <mat-dialog-content>
   <form [formGroup]="lancamentoForm" (ngSubmit)="onIncluirLancamento()">
@@ -291,7 +291,8 @@
         mat-flat-button
         color="primary"
         matButton="filled"
-        type="submit"
+        type="button"
+        (click)="onIncluirLancamento()"
         [disabled]="lancamentoForm.invalid || modoVisualizacao()"
       >
         Incluir
