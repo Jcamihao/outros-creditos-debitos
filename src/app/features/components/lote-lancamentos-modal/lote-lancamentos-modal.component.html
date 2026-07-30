@@ -26,163 +26,135 @@
 
 <mat-dialog-content>
   <form [formGroup]="lancamentoForm" (ngSubmit)="onIncluirLancamento()">
-    <div formGroupName="contaCorrente">
-      <mat-form-field>
-        <mat-label>Conta Corrente</mat-label>
-        <input matInput formControlName="contaCorrente" />
-        <button
-          mat-icon-button
-          matSuffix
-          type="button"
-          (click)="buscarConta()"
-          aria-label="Buscar conta corrente"
-        >
-          <mat-icon>search</mat-icon>
-        </button>
-
-        @if (lancamentoForm.get('contaCorrente.contaCorrente')?.hasError('required')) {
-          <mat-error>Conta Corrente é obrigatória</mat-error>
+    <h3 class="titulo-secao">Conta Corrente</h3>
+    <div formGroupName="contaCorrente" class="caixa-secao">
+      <div class="linha-campo">
+        <label class="rotulo-campo">Conta Corrente *</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="contaCorrente" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="buscarConta()"
+            aria-label="Buscar conta corrente"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+          @if (lancamentoForm.get('contaCorrente.contaCorrente')?.hasError('required')) {
+            <mat-error>Conta Corrente é obrigatória</mat-error>
+          }
+        </mat-form-field>
+        @if (nomeTitularEncontrado()) {
+          <span class="valor-encontrado">{{ nomeTitularEncontrado() }}</span>
         }
-      </mat-form-field>
-      @if (nomeTitularEncontrado()) {
-        <span>{{ nomeTitularEncontrado() }}</span>
-      }
+      </div>
 
-      <mat-form-field>
-        <mat-label>Valor</mat-label>
-        <input matInput type="number" formControlName="valor" />
+      <div class="linha-campo">
+        <label class="rotulo-campo">Valor *</label>
+        <mat-form-field appearance="outline">
+          <input matInput type="number" formControlName="valor" />
+          @if (lancamentoForm.get('contaCorrente.valor')?.hasError('required')) {
+            <mat-error>Valor é obrigatório</mat-error>
+          }
+          @if (lancamentoForm.get('contaCorrente.valor')?.hasError('min')) {
+            <mat-error>Valor deve ser maior que zero</mat-error>
+          }
+        </mat-form-field>
+      </div>
 
-        @if (lancamentoForm.get('contaCorrente.valor')?.hasError('required')) {
-          <mat-error>Valor é obrigatório</mat-error>
-        }
-        @if (lancamentoForm.get('contaCorrente.valor')?.hasError('min')) {
-          <mat-error>Valor deve ser maior que zero</mat-error>
-        }
-      </mat-form-field>
+      <div class="linha-campo">
+        <label class="rotulo-campo">Histórico *</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="historico">
+            <mat-option value="Lançamento Manual">Lançamento Manual</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox formControlName="estorno">Estorno</mat-checkbox>
+      </div>
 
-      <mat-form-field>
-        <mat-label>Histórico</mat-label>
-        <mat-select formControlName="historico">
-          <mat-option value="Lançamento Manual">Lançamento Manual</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="linha-campo">
+        <label class="rotulo-campo">Documento *</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="documento" />
+          @if (lancamentoForm.get('contaCorrente.documento')?.hasError('required')) {
+            <mat-error>Documento é obrigatório</mat-error>
+          }
+        </mat-form-field>
+      </div>
 
-      <mat-checkbox formControlName="estorno">Estorno</mat-checkbox>
+      <div class="linha-campo linha-campo-topo">
+        <label class="rotulo-campo">Descrição</label>
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="descricao" rows="3"></textarea>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field>
-        <mat-label>Documento</mat-label>
-        <input matInput formControlName="documento" />
-        @if (lancamentoForm.get('contaCorrente.documento')?.hasError('required')) {
-          <mat-error>Documento é obrigatório</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Descrição</mat-label>
-        <textarea matInput formControlName="descricao"></textarea>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Situação</mat-label>
-        <input matInput formControlName="situacao" />
-      </mat-form-field>
+      <div class="linha-campo">
+        <label class="rotulo-campo">Situação</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="situacao" />
+        </mat-form-field>
+      </div>
     </div>
 
-    <div formGroupName="documentoCsc">
-      <mat-form-field>
-        <mat-label>PA</mat-label>
-        <mat-select formControlName="pa">
-          <mat-option value="Cooperativa">Cooperativa</mat-option>
-        </mat-select>
-        @if (lancamentoForm.get('documentoCsc.pa')?.hasError('required')) {
-          <mat-error>PA é obrigatório</mat-error>
+    <h3 class="titulo-secao">Documento CSC</h3>
+    <div formGroupName="documentoCsc" class="caixa-secao">
+      <div class="linha-campo">
+        <label class="rotulo-campo">PA *</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="pa">
+            <mat-option value="Cooperativa">Cooperativa</mat-option>
+          </mat-select>
+          @if (lancamentoForm.get('documentoCsc.pa')?.hasError('required')) {
+            <mat-error>PA é obrigatório</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="linha-campo">
+        <label class="rotulo-campo">ID Evento</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="idEvento" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="buscarEvento()"
+            aria-label="Buscar evento"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+        @if (eventoDescricaoEncontrada()) {
+          <span class="valor-encontrado">{{ eventoDescricaoEncontrada() }}</span>
         }
-      </mat-form-field>
+      </div>
 
-      <mat-form-field>
-        <mat-label>ID Evento</mat-label>
-        <input matInput formControlName="idEvento" />
-        <button
-          mat-icon-button
-          matSuffix
-          type="button"
-          (click)="buscarEvento()"
-          aria-label="Buscar evento"
-        >
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-form-field>
-      @if (eventoDescricaoEncontrada()) {
-        <span>{{ eventoDescricaoEncontrada() }}</span>
-      }
+      <div class="linha-campo linha-campo-topo">
+        <label class="rotulo-campo">Compl. Histórico *</label>
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="complHistorico" rows="3"></textarea>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field>
-        <mat-label>Compl. Histórico</mat-label>
-        <input matInput formControlName="complHistorico" />
-      </mat-form-field>
+      <div class="linha-campo">
+        <label class="rotulo-campo">Situação</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="situacao" />
+        </mat-form-field>
+      </div>
 
-      <mat-form-field>
-        <mat-label>Situação</mat-label>
-        <input matInput formControlName="situacao" />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>ID Documento CSC</mat-label>
-        <input matInput formControlName="idDocCsc" />
-      </mat-form-field>
+      <div class="linha-campo">
+        <label class="rotulo-campo">ID Doc CSC</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="idDocCsc" />
+        </mat-form-field>
+      </div>
     </div>
-
-    <mat-dialog-actions>
-      <button mat-button type="button" (click)="dialogRef.close(lancamentos())">Fechar</button>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="lancamentoForm.invalid || modoVisualizacao()"
-      >
-        Incluir
-      </button>
-    </mat-dialog-actions>
   </form>
 
-  <div class="toolbar-lancamentos">
-    <button
-      mat-stroked-button
-      type="button"
-      [disabled]="!lancamentoSelecionado()"
-      (click)="duplicarLancamento()"
-    >
-      Duplicar
-    </button>
-
-    <button
-      mat-stroked-button
-      type="button"
-      [disabled]="!lancamentoSelecionado()"
-      (click)="visualizarLancamento()"
-    >
-      Visualizar
-    </button>
-
-    <button
-      mat-stroked-button
-      type="button"
-      [disabled]="!lancamentoSelecionado()"
-      (click)="alterarLancamento()"
-    >
-      Alterar
-    </button>
-    <button
-      mat-stroked-button
-      type="button"
-      [disabled]="!lancamentoSelecionado()"
-      (click)="excluirLancamento()"
-    >
-      Excluir
-    </button>
-  </div>
-
-  <table mat-table [dataSource]="lancamentos()">
+  <table mat-table [dataSource]="lancamentos()" class="tabela-lancamentos">
     <ng-container matColumnDef="idLancamento">
       <th mat-header-cell *matHeaderCellDef>ID Lançamento</th>
       <td mat-cell *matCellDef="let lancamento">{{ lancamento.idLancamento }}</td>
@@ -221,22 +193,46 @@
       [class.selecionado]="lancamentoSelecionado() === row"
     ></tr>
   </table>
+  <div class="toolbar-lancamentos">
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="duplicarLancamento()"
+    >
+      Duplicar
+    </button>
+
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="visualizarLancamento()"
+    >
+      Visualizar
+    </button>
+
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="alterarLancamento()"
+    >
+      Alterar
+    </button>
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="!lancamentoSelecionado()"
+      (click)="excluirLancamento()"
+    >
+      Excluir
+    </button>
+  </div>
 
   <div class="secao-anexo">
-    <h3>Anexo</h3>
-    <div class="toolbar-anexo">
-      <button mat-stroked-button type="button" [disabled]="!anexoSelecionado()">Visualizar</button>
-      <button mat-stroked-button type="button" (click)="seletorArquivo.click()">Incluir</button>
-      <input #seletorArquivo type="file" hidden (change)="incluirAnexo(seletorArquivo)" />
-      <button
-        mat-stroked-button
-        type="button"
-        [disabled]="!anexoSelecionado()"
-        (click)="excluirAnexo()"
-      >
-        Excluir
-      </button>
-    </div>
+    <span class="titulo-anexo">Anexo</span>
+    <h4 class="subtitulo-anexo">ANEXOS</h4>
 
     <table mat-table [dataSource]="anexos()">
       <ng-container matColumnDef="nomeArquivo">
@@ -269,5 +265,45 @@
         [class.selecionado]="anexoSelecionado() === row"
       ></tr>
     </table>
+
+    <div class="toolbar-anexo">
+      <button mat-stroked-button type="button" [disabled]="!anexoSelecionado()">Visualizar</button>
+      <button mat-stroked-button type="button" (click)="seletorArquivo.click()">Incluir</button>
+      <input #seletorArquivo type="file" hidden (change)="incluirAnexo(seletorArquivo)" />
+      <button
+        mat-stroked-button
+        type="button"
+        [disabled]="!anexoSelecionado()"
+        (click)="excluirAnexo()"
+      >
+        Excluir
+      </button>
+    </div>
   </div>
+
+  <mat-dialog-actions class="rodape-modal">
+    <mat-checkbox [checked]="manterDadosNaTela()" (change)="manterDadosNaTela.set($event.checked)">
+      Manter dados na tela
+    </mat-checkbox>
+
+    <div class="botoes-rodape">
+      <button
+        mat-flat-button
+        color="primary"
+        matButton="filled"
+        type="submit"
+        [disabled]="lancamentoForm.invalid || modoVisualizacao()"
+      >
+        Incluir
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        matButton="outlined"
+        (click)="dialogRef.close(lancamentos())"
+      >
+        Fechar
+      </button>
+    </div>
+  </mat-dialog-actions>
 </mat-dialog-content>

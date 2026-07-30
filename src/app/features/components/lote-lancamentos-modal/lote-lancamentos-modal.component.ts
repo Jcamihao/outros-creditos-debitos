@@ -56,6 +56,7 @@ export class LoteLancamentosModalComponent {
   quantLancamentos = computed(() => this.lancamentos().length);
   eventoABaixarPorLote = signal(false);
   anexos = signal<Anexo[]>([]);
+  manterDadosNaTela = signal(false);
   anexoSelecionado = signal<Anexo | null>(null);
   displayedColumnsAnexos = ['nomeArquivo', 'descricao', 'dataInclusao', 'idUsuario'];
 
@@ -84,7 +85,10 @@ export class LoteLancamentosModalComponent {
   });
 
   buscarEvento(): void {
-    const dialogRef = this.dialog.open(PesquisaEventoModalComponent);
+    const dialogRef = this.dialog.open(PesquisaEventoModalComponent, {
+      width: '750px',
+      maxWidth: '95vw',
+    });
     dialogRef.afterClosed().subscribe((evento: Evento | undefined) => {
       if (evento) {
         this.lancamentoForm.get('documentoCsc.idEvento')?.setValue(evento.idEvento);
@@ -167,6 +171,10 @@ export class LoteLancamentosModalComponent {
     }
 
     this.modoVisualizacao.set(false);
+    if (!this.manterDadosNaTela()) {
+      this.lancamentoForm.reset();
+    }
+    this.lancamentoSelecionado.set(null);
     this.lancamentoForm.reset();
     this.lancamentoSelecionado.set(null);
   }
