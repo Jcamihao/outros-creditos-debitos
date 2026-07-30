@@ -18,7 +18,13 @@
       <input matInput #campoBusca />
     </mat-form-field>
 
-    <button mat-flat-button color="primary" type="button" (click)="listar(campoBusca.value)">
+    <button
+      mat-flat-button
+      color="primary"
+      matButton="filled"
+      type="button"
+      (click)="listar(campoBusca.value)"
+    >
       Listar
     </button>
   </div>
@@ -58,18 +64,23 @@
     ></tr>
   </table>
   <div class="paginacao">
-    <button mat-stroked-button type="button" disabled>Anterior</button>
+    <button mat-stroked-button color="primary" matButton="filled" type="button" disabled>
+      Anterior
+    </button>
     <span>Página 1</span>
-    <button mat-stroked-button type="button" disabled>Próxima</button>
+    <button mat-stroked-button color="primary" matButton="filled" type="button" disabled>
+      Próxima
+    </button>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button type="button" (click)="dialogRef.close()">Fechar</button>
+  <button mat-button type="button" matButton="filled" (click)="dialogRef.close()">Fechar</button>
   <button
     mat-flat-button
     color="primary"
     type="button"
+    matButton="filled"
     [disabled]="!eventoSelecionado()"
     (click)="confirmar()"
   >
