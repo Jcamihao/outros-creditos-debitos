@@ -1,21 +1,25 @@
+.content-consulta {
+  background-color: var(--mat-sys-surface-container-low);
+  padding: 35px;
+}
+
+.table {
+  margin-top: 30px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 10px;
+}
+
 .barra-acoes {
   display: flex;
   flex-wrap: wrap;
   margin: var(--spacing-md) 0;
+  gap: 5px;
+  padding-left: 10px;
 }
 
 .barra-acoes button {
-  border-radius: 0;
-  margin-left: -1px;
-}
-
-.barra-acoes button:first-child {
-  border-radius: 4px 0 0 4px;
-  margin-left: 0;
-}
-
-.barra-acoes button:last-child {
-  border-radius: 0 4px 4px 0;
+  border-radius: 5px;
+  // margin-left: -1px;
 }
 
 @media (max-width: 600px) {
